@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de monedas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    
+    <main class="row mx-0 min-vh-100">
+        <form id="form" class="col-12 col-md-5 col-lg-4 bg-dark p-4 shadow-lg mx-auto d-flex align-items-center justify-content-center">
+            <div class="px-4">
+                <h1 class="mb-4 text-light h3">Conversor de Monedas Nacional</h1>
+                <label for="clp" class="form-label text-light">Peso Chileno CLP</label>
+                <input type="number" class="form-control mb-4" id="clp" name="clp" placeholder="Ej: 10000" required>
+
+                <label for="currency" class="form-label text-light">Convertir a:</label>
+                <select id="currency" name="currency" class="form-select mb-4" required>
+                    <option value="">Seleccione moneda</option>
+                    <option value="dolar">Dolar</option>
+                    <option value="euro">Euro</option>
+                    <option value="uf">UF</option>
+                </select>
+                <button class="btn btn-primary py-2 w-100" id="btn-convert">CONVERTIR</button>
+                <div id="result-html" class="text-light text-center mt-4 mb-3"></div>
+                <div id="spinner" class="d-flex justify-content-center d-none">
+                    <div class="spinner-border text-light" role="status" aria-hidden="true"></div>
+                </div>
+            </div>
+        </form>
+        <section title="Gráfico" class="col-12 col-md-7 col-lg-8 d-flex align-items-center">
+            <div class="px-5 w-100">
+
+                <div id="chart-message" class="text-center">
+                    <span class="material-symbols-outlined display-1">monitoring</span>
+                    <h2 class="mt-4 mb-2">Gráfico sin información</h2>
+                    <p class="mb-0">Por favor realiza una conversión de moneda.</p>
+                </div>
+
+                <canvas id="chart"></canvas>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="assets/js/script.js"></script>
+</body>
+</html>
