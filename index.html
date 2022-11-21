@@ -16,7 +16,7 @@
             <div class="px-4">
                 <h1 class="mb-4 text-light h3">Conversor de Monedas Nacional</h1>
                 <label for="clp" class="form-label text-light">Peso Chileno CLP</label>
-                <input type="number" class="form-control mb-4" id="clp" name="clp" placeholder="Ej: 10000" required>
+                <input data-mask="#.##0,00" inputmode="numeric" class="form-control mb-4" id="clp" name="clp" placeholder="Ej: 10000" required>
 
                 <label for="currency" class="form-label text-light">Convertir a:</label>
                 <select id="currency" name="currency" class="form-select mb-4" required>
@@ -33,20 +33,19 @@
             </div>
         </form>
         <section title="Gráfico" class="col-12 col-md-7 col-lg-8 d-flex align-items-center">
-            <div class="px-5 w-100">
-
+            <div class="px-md-5 w-100">
                 <div id="chart-message" class="text-center">
                     <span class="material-symbols-outlined display-1">monitoring</span>
-                    <h2 class="mt-4 mb-2">Gráfico sin información</h2>
+                    <h2 class="mt-4 mb-2">Sin información</h2>
                     <p class="mb-0">Por favor realiza una conversión de moneda.</p>
                 </div>
-
-                <canvas id="chart"></canvas>
+                <canvas id="chart" class="d-none"></canvas>
             </div>
         </section>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://jsuites.net/v4/jsuites.js"></script>
     <script src="assets/js/script.js"></script>
 </body>
 </html>

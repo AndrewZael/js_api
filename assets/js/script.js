@@ -1,7 +1,11 @@
+// Se selecciona elementos HTML necesarios
 const form = document.getElementById('form');
 const resultHtml = document.getElementById('result-html');
 const spinner = document.getElementById('spinner');
 const chartMessage = document.getElementById('chart-message');
+const ctx = document.getElementById('chart');
+
+// Se definen variables genéricas
 let cod = '';
 let clp = 0;
 let currency = '';
@@ -9,8 +13,8 @@ let valueCurrency = 0;
 let serie = [];
 let chart = '';
 
+// Escucha el evento submit del formulario
 form.addEventListener('submit', function(e){
-
     e.preventDefault();
     preloader(true);
     const data = new FormData(e.target);
@@ -24,7 +28,7 @@ form.addEventListener('submit', function(e){
         preloader(false);
         if(typeof res === 'number'){
             valueCurrency = res;
-            response = `<h2>${convert(valueCurrency)} <span class="text-uppercase">${cod}</span></h2>`;
+            response = `<h2>${convert(valueCurrency)} <span class="text-uppercase h5 fw-normal">${cod}</span></h2>`;
             chart != '' && chart.destroy();
             getChart();
         }else{
@@ -35,6 +39,7 @@ form.addEventListener('submit', function(e){
     
 });
 
+// Consulta a la API https://mindicador.cl/api
 async function getCurrency(currency){
     try{
         const getData = await fetch(`https://mindicador.cl/api/${currency}`);
@@ -47,14 +52,18 @@ async function getCurrency(currency){
     }
 }
 
+// Realiza el cálculo para la conversión
 function convert(valueCurrency){
-    return (clp / valueCurrency).toFixed(1);
+    const clpValue = parseInt(clp.toString().replaceAll('.', ''));
+    return Number((clpValue / valueCurrency).toFixed(1)).toLocaleString('es-cl',{ minimumFractionDigits: 2 });
 }
 
+// Muestra u oculta preloader
 function preloader(show){
     show ? spinner.classList.remove('d-none') : spinner.classList.add('d-none');
 }
 
+// Retorna un elemento alert
 function notice(message){
     return `<div class="h6 fw-light text-danger d-flex align-items-center mb-0">
         <span class="material-symbols-outlined me-2">error</span><br>
@@ -62,15 +71,18 @@ function notice(message){
     </div>`;
 }
 
+// Muestra gráfico
 function getChart(){
-    const ctx = document.getElementById('chart');
+    ctx.classList.remove('d-none');
     chartMessage.classList.add('d-none');
     chart = new Chart(ctx, {
         type: 'line',
         data: {
             datasets:[{
                 label: cod.charAt(0).toUpperCase() + cod.slice(1),
-                data: serie
+                data: serie,
+                borderColor: '#0d6efd',
+                backgroundColor: '#0d6efd',
             }]
         },
         options: {
