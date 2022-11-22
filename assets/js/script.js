@@ -26,7 +26,7 @@ form.addEventListener('submit', function(e){
         if(typeof res != "string"){
             let valueCurrency = res.serie[0].valor;
             let cod = res.codigo;
-            serie = res.serie.slice(0,10);
+            let serie = res.serie.slice(0,10);
             chart != '' && chart.destroy();
             getChart(serie, cod);
             response = `<h2>${convert(valueCurrency, clp)} <span class="text-uppercase h5 fw-normal">${cod}</span></h2>`;
