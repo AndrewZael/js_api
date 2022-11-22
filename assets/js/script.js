@@ -6,11 +6,6 @@ const chartMessage = document.getElementById('chart-message');
 const ctx = document.getElementById('chart');
 
 // Se definen variables genéricas
-let cod = '';
-let clp = 0;
-let currency = '';
-let valueCurrency = 0;
-let serie = [];
 let chart = '';
 
 // Escucha el evento submit del formulario
@@ -18,22 +13,26 @@ form.addEventListener('submit', function(e){
     e.preventDefault();
     preloader(true);
     const data = new FormData(e.target);
+    let clp = 0;
+    let currency = '';
     for (let [key, value] of data.entries()) { 
         key == 'clp' && (clp = value);
         key == 'currency' && (currency = value);
     }
 
     getCurrency(currency).then(res => {
-        response = '';
+        let response = '';
         preloader(false);
-        if(typeof res === 'number'){
-            valueCurrency = res;
-            response = `<h2>${convert(valueCurrency)} <span class="text-uppercase h5 fw-normal">${cod}</span></h2>`;
+        if(typeof res != "string"){
+            let valueCurrency = res.serie[0].valor;
+            let cod = res.codigo;
+            serie = res.serie.slice(0,10);
             chart != '' && chart.destroy();
-            getChart();
+            getChart(serie, cod);
+            response = `<h2>${convert(valueCurrency, clp)} <span class="text-uppercase h5 fw-normal">${cod}</span></h2>`;
         }else{
-            response = res;
-        }        
+            response = notice(res);
+        }
         resultHtml.innerHTML = response;
     });
     
@@ -44,18 +43,16 @@ async function getCurrency(currency){
     try{
         const getData = await fetch(`https://mindicador.cl/api/${currency}`);
         const json = await getData.json();
-        cod = json.codigo;
-        serie = json.serie.slice(0,10);
-        return json.serie[0].valor;
+        return json;
     }catch(err){
-        return notice('¡Ups! Algo ha salido mal, por favor inténtalo nuevamente.');
+        return `¡Ups! Algo ha salido mal, por favor inténtalo nuevamente.`;
     }
 }
 
 // Realiza el cálculo para la conversión
-function convert(valueCurrency){
+function convert(valueCurrency, clp){
     const clpValue = parseInt(clp.toString().replaceAll('.', ''));
-    return Number((clpValue / valueCurrency).toFixed(1)).toLocaleString('es-cl',{ minimumFractionDigits: 2 });
+    return Number((clpValue / valueCurrency).toFixed(2)).toLocaleString('es-cl',{ minimumFractionDigits: 4 });
 }
 
 // Muestra u oculta preloader
@@ -72,14 +69,14 @@ function notice(message){
 }
 
 // Muestra gráfico
-function getChart(){
+function getChart(serie, cod){
     ctx.classList.remove('d-none');
     chartMessage.classList.add('d-none');
     chart = new Chart(ctx, {
         type: 'line',
         data: {
             datasets:[{
-                label: cod.charAt(0).toUpperCase() + cod.slice(1),
+                label: cod.toUpperCase(),
                 data: serie,
                 borderColor: '#0d6efd',
                 backgroundColor: '#0d6efd',
