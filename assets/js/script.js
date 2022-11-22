@@ -3,6 +3,7 @@ const form = document.getElementById('form');
 const resultHtml = document.getElementById('result-html');
 const spinner = document.getElementById('spinner');
 const chartMessage = document.getElementById('chart-message');
+const btnConvert = document.getElementById('btn-convert');
 const ctx = document.getElementById('chart');
 
 // Se definen variables genéricas
@@ -12,6 +13,7 @@ let chart = '';
 form.addEventListener('submit', function(e){
     e.preventDefault();
     preloader(true);
+    btnConvert.setAttribute('disabled', '');
     const data = new FormData(e.target);
     let clp = 0;
     let currency = '';
@@ -23,6 +25,7 @@ form.addEventListener('submit', function(e){
     getCurrency(currency).then(res => {
         let response = '';
         preloader(false);
+        btnConvert.removeAttribute('disabled');
         if(typeof res != "string"){
             let valueCurrency = res.serie[0].valor;
             let cod = res.codigo;
